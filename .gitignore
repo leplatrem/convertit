@@ -25,3 +25,12 @@ pip-log.txt
 
 #Mr Developer
 .mr.developer.cfg
+
+etc/apache/100-convertit.reverseproxy.conf
+etc/convertit.env
+etc/init.d/
+etc/wsgi/
+etc/logrotate.conf
+local.cfg
+
+src/convertit/tests/data/tmp/

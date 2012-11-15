@@ -27,9 +27,9 @@ class UnoconvRegisterTests(unittest.TestCase):
 
 
 class UnoconvConvertionTests(unittest.TestCase):
-    temp_dir = os.path.join(here, '../data/tmp')
-    document_filepath = os.path.join(here, '../data/test_document.odt')
-    reference_filepath = os.path.join(here, '../data/test_document.pdf')
+    temp_dir = os.path.join(here, 'data/tmp')
+    document_filepath = os.path.join(here, 'data/test_document.odt')
+    reference_filepath = os.path.join(here, 'data/test_document.pdf')
 
     def setUp(self):
         if not unoconv.exists():

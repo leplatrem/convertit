@@ -28,9 +28,9 @@ class InkscapeRegisterTests(unittest.TestCase):
 
 
 class InkscapeConvertionTests(unittest.TestCase):
-    temp_dir = os.path.join(here, '../data/tmp')
-    document_filepath = os.path.join(here, '../data/test_svg.svg')
-    reference_filepath = os.path.join(here, '../data/test_svg.pdf')
+    temp_dir = os.path.join(here, 'data/tmp')
+    document_filepath = os.path.join(here, 'data/test_svg.svg')
+    reference_filepath = os.path.join(here, 'data/test_svg.pdf')
 
     def setUp(self):
         if not inkscape.exists():

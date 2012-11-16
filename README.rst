@@ -34,7 +34,7 @@ Dependencies
 Install
 =======
 * Download and extract a released tarball from `pypi <http://pypi.python.org/pypi/convertit>`_
-* The bleeding edge version is hosted on github ::
+* The bleeding edge version is hosted on `github <https://github.com/makinacorpus/convertit>`_ ::
 
     git clone https://github.com/makinacorpus/convertit.git
 
@@ -47,17 +47,24 @@ Install
 Development
 ============
 ::
+
     cd convertit
     bin/buildout -Nc buildout-dev.cfg
     pserve --reload etc/wsgi/instance.ini
-    bin/scripts setup.py test
+
+Run tests::
+
+    bin/convertit.test
 
 Once the application is running, you may visit http://localhost:6543/ in your browser.
 
 Production
 ===========
 ::
+
     cd convertit
+    cp local.cfg.in local.cfg
+    $ED local.cfg
     bin/buildout -Nc buildout-prod.cfg
     bin/supervisord
     bin/supervisorctl status

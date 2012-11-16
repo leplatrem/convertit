@@ -9,8 +9,8 @@ Documents are pulled by the webserver.
 GET parameters are:
 
 - **url**: a url to a document to be grabbed from transformation
-- **output_mt**: (optionnal, default to ``application/pdf`` if not provided)
-- **input_mt**: (optionnal, guessed from input url if not provided)
+- **to**: output mimetype (optionnal, default to ``application/pdf`` if not provided)
+- **from**: input mimetype (optionnal, guessed from input url if not provided)
 
 Older transformed documents are cleaned after a defined time, tested at each http request on the application.
 

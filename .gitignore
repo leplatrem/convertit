@@ -34,3 +34,6 @@ etc/logrotate.conf
 local.cfg
 
 src/convertit/tests/data/tmp/
+src/convertit/tests/data/converted_dir/
+src/convertit/tests/data/download_dir/
+

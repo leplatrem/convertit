@@ -3,6 +3,22 @@ Convertit
 
 A conversion webservice.
 
+Idea is to make a GET request to the webservice and you ll get a downloadable transformed file:
+Documents are pulled by the webserver.
+
+GET parameters are:
+
+- **url**: a url to a document to be grabbed from transformation
+- **output_mt**: (optionnal, default to ``application/pdf`` if not provided)
+- **input_mt**: (optionnal, guessed from input url if not provided)
+
+Older transformed documents are cleaned after a defined time, tested at each http request on the application.
+
+base transforms:
+- odt -> pdf
+- odt -> doc
+- svg -> pdf
+
 .. contents::
 
 Feedback

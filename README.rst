@@ -38,7 +38,7 @@ Install
 
     git clone https://github.com/makinacorpus/convertit.git
 
-* PreInstall it ::
+* PreInstall it (only via buildout)::
 
     cd convertit
     python bootstrap.py -dc buildout-dev.cfg
@@ -46,11 +46,27 @@ Install
 
 Development
 ============
+Without buildout
+-------------------
+::
+
+    cd convertit
+    python setup.py develop
+    pserve --reload development.ini
+
+Run tests::
+
+    python setup.py test
+
+Once the application is running, you may visit http://localhost:6543/ in your browser.
+
+Buildout
+----------
 ::
 
     cd convertit
     bin/buildout -Nc buildout-dev.cfg
-    pserve --reload etc/wsgi/instance.ini
+    bin/pserve --reload etc/wsgi/instance.ini
 
 Run tests::
 
@@ -60,17 +76,36 @@ Once the application is running, you may visit http://localhost:6543/ in your br
 
 Production
 ===========
+Without buildout
+-------------------
+::
+
+    cd convertit
+    python setup.py develop
+    pserve --reload production.ini
+
+Run tests::
+
+    python setup.py test
+
+Once the application is running, you may visit http://localhost:6543/ in your browser.
+
+
+Buildout
+----------
 ::
 
     cd convertit
     cp local.cfg.in local.cfg
     $ED local.cfg
     bin/buildout -Nc buildout-prod.cfg
+    bin/pserve --reload etc/wsgi/instance1.ini
+    ^C
     bin/supervisord
     bin/supervisorctl status
 
 
-Some files have been generated in etc/ for your convenience:
+Some files have been generated in etc/ for your convenience (only buildout):
 
     * An init script
     * A logrotate configuration

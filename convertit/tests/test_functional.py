@@ -12,14 +12,16 @@ from convertit.tests.unittest import unittest
 here = os.path.dirname(__file__)
 data_path = os.path.join(here, 'data')
 settings = {
-    'convertit.converted_path': os.path.join(data_path, 'converted'),
     'convertit.downloads_path': os.path.join(data_path, 'downloads'),
+    'convertit.downloads_max_age': 60,
+    'convertit.converted_path': os.path.join(data_path, 'converted'),
+    'convertit.converted_max_age': 60,
     'convertit.converted_url': 'converted',
+    'convertit.converted_name': '{url_hostname}_{url_port}_{url_dirname}_{url_filename}{extension}',
     'convertit.converters': """
         convertit.converters.unoconv
         convertit.converters.inkscape
     """,
-    'convertit.converted_name': '{url_hostname}_{url_port}_{url_dirname}_{url_filename}{extension}',
 }
 
 

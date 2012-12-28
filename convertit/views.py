@@ -14,45 +14,35 @@ from pyramid.url import static_url
 from pyramid.view import view_config
 
 from convertit.helpers import (
-    download_file,
     remove_files_older_than,
     render_converted_name,
 )
 
 
-seconds_in_hour = 3600
-
-
 def remove_old_files(request):
     settings = request.registry.settings
-
     downloads_path = settings['convertit.downloads_path']
     converted_path = settings['convertit.converted_path']
-
-    downloads_max_age = settings.get('convertit.downloads_max_age',
-                                     seconds_in_hour)
-    converted_max_age = settings.get('convertit.converted_max_age',
-                                     seconds_in_hour)
+    downloads_max_age = settings['convertit.downloads_max_age']
+    converted_max_age = settings['convertit.converted_max_age']
 
     remove_files_older_than(int(downloads_max_age), downloads_path)
     remove_files_older_than(int(converted_max_age), converted_path)
 
 
-def save(request, uploaded_file):
+def save(request, file_):
     downloads_path = request.registry.settings['convertit.downloads_path']
     target_file = os.path.join(downloads_path, str(uuid4()))
     with open(target_file, 'w') as f:
-        f.write(uploaded_file.read())
+        f.write(file_.read())
     return target_file
 
 
 def download(request, url):
-    downloads_path = request.registry.settings['convertit.downloads_path']
-
     message = "Sorry, there was an error fetching the document. Reason: %s"
     try:
-        downloaded_filepath = download_file(url, downloads_path)
-        return downloaded_filepath
+        response = urllib2.urlopen(url)
+        return save(request, response)
     except ValueError as e:
         raise HTTPBadRequest(message % str(e))
     except urllib2.HTTPError as e:
@@ -81,10 +71,9 @@ def get_converter(request, input_mimetype, output_mimetype):
     return converters[(input_mimetype, output_mimetype)]
 
 
-def output_basename_from_url(request, mimetype, url):
+def output_basename_from_url(request, extension, url):
     settings = request.registry.settings
     name_template = settings['convertit.converted_name']
-    extension = guess_extension(mimetype)
     return render_converted_name(name_template, url, extension)
 
 
@@ -107,8 +96,7 @@ def home_post_view(request):
 
     filename = os.path.splitext(uploaded.filename)[0]
 
-    def output_basename_generator(request, mimetype):
-        extension = guess_extension(mimetype)
+    def output_basename_generator(request, extension):
         return '%s%s' % (filename, extension)
 
     return home_view(request, input_filepath, output_basename_generator)
@@ -121,7 +109,8 @@ def home_view(request, input_filepath, output_basename_generator):
     input_mimetype = get_input_mimetype(request, input_filepath)
 
     output_mimetype = request.GET.get('to', 'application/pdf')
-    output_basename = output_basename_generator(request, output_mimetype)
+    output_extension = guess_extension(output_mimetype)
+    output_basename = output_basename_generator(request, output_extension)
     output_filepath = os.path.join(converted_path, output_basename)
 
     remove_old_files(request)
@@ -131,7 +120,7 @@ def home_view(request, input_filepath, output_basename_generator):
     try:
         convert(input_filepath, output_filepath)
     except Exception as e:
-        message = "Sorry, there was an error fetching the document. Reason: %s"
+        message = "Sorry, an error occured during convertion: %s"
         return HTTPBadRequest(message % str(e))
 
     return HTTPFound(static_url(output_filepath, request),

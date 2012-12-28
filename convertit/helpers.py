@@ -1,18 +1,6 @@
 import os
-import urllib2
 from urlparse import urlsplit
-from uuid import uuid4
 from datetime import datetime
-
-
-def download_file(url, target_dir):
-    _, ext = os.path.splitext(url)
-    data = urllib2.urlopen(url).read()
-    filename = "%s%s" % (uuid4(), ext)
-    target_file = os.path.join(target_dir, filename)
-    with open(target_file, 'w') as f:
-        f.write(data)
-    return target_file
 
 
 def remove_files_older_than(limit, path):

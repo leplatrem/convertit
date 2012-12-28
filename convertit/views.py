@@ -91,7 +91,9 @@ def home_get_view(request):
 
 @view_config(route_name='home', request_method='POST')
 def home_post_view(request):
-    uploaded = request.POST.get('file')
+    settings = request.registry.settings
+    field = settings['convertit.post_field']
+    uploaded = request.POST.get(field)
     input_filepath = save(request, uploaded.file)
 
     filename = os.path.splitext(uploaded.filename)[0]

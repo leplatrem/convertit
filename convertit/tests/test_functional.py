@@ -12,6 +12,7 @@ from convertit.tests.unittest import unittest
 here = os.path.dirname(__file__)
 data_path = os.path.join(here, 'data')
 settings = {
+    'convertit.post_field': 'file',
     'convertit.downloads_path': os.path.join(data_path, 'downloads'),
     'convertit.downloads_max_age': 60,
     'convertit.converted_path': os.path.join(data_path, 'converted'),
@@ -115,7 +116,8 @@ class FunctionalTests(unittest.TestCase):
 
     def test_post(self):
         "Get post document"
-        upload_files = [('file', 'test_document.odt', self.odt_data())]
+        field = settings['convertit.post_field']
+        upload_files = [(field, 'test_document.odt', self.odt_data())]
         converted_path = settings['convertit.converted_path']
         resp = self.testapp.post('/', upload_files=upload_files, status=302)
         filename = os.path.basename(resp.location)
